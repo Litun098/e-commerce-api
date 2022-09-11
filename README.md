@@ -1,6 +1,3 @@
-**Initialize the project** 
- -> npm init 
-
 **Install required modules**
  -> npm i
 
