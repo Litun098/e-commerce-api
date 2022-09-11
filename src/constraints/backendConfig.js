@@ -1,0 +1,10 @@
+module.exports={
+    mysql:{
+        local:{
+            host:'127.0.0.1',
+            user:"root",
+            password:null,
+            database:'ecom_db'
+        }
+    }
+}
