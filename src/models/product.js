@@ -1,8 +1,28 @@
 const sqlConnection = require('../services/sqlConnection');
 
-function listProducts(cb){
+function listProducts(data, cb){
     let sql = "select id as ProductId, name as Name, price as Price from products";
     let value = [];
+
+    if(data.categoryId){
+        sql += " Where categoryId = ?";
+        value.push(data.categoryId);
+        if(data.minPrice){
+            sql += " and price >= ?";
+            value.push(data.minPrice);
+        }else if(data.maxPrice){
+            sql += " and price <= ?";
+            value.push(data.maxPrice);
+        }
+    }
+    else if(data.minPrice){
+        sql += " where price >= ?"
+        value.push(data.minPrice)
+    }
+    else if(data.maxPrice){
+        sql += " where price <= ?"
+        value.push(data.maxPrice)
+    }
     sqlConnection.executeQuery(sql,value,function(err,result){
         cb(err,result);
     })

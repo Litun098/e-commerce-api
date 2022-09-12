@@ -1,7 +1,10 @@
 const Product = require('../models/product');
 
 function listProducts(req, res) {
-    Product.listProducts(function (err, result) {
+
+    const data = req.body;
+
+    Product.listProducts(data,function (err, result) {
         if (err) {
             console.log(err);
             return res.status(500).send({
