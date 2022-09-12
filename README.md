@@ -17,4 +17,16 @@ vendorId
 **API to get all categories**
  -> localhost:3000/api/v1/category/all
 
+**API for Signup**
+ -> localhost:3000/api/v1/user/signup 
+ {
+    username,
+    password
+ }
 
+**API for Login**
+ -> localhost:3000/api/v1/user/login
+ {
+    username,
+    password
+ }
