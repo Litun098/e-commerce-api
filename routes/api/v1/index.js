@@ -6,8 +6,13 @@ const userController = require('../../../src/controllers/userController')
 let router = express.Router();
 
 router.get("/category/all",listCategories);
-router.get('/product/all',productController.listProducts)
-router.post('/product/add',productController.addProduct)
+
+router.get('/product/all',userController.isAuthenticated,productController.listProducts)
+
+router.post('/product/add',userController.isAuthenticated,productController.addProduct)
+
 router.post('/user/signup',userController.signup)
+
 router.post('/user/login',userController.login)
+
 module.exports = router

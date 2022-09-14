@@ -1,5 +1,5 @@
 const User = require('../models/user');
-
+const auth = require('../util/auth')
 function signup(req, res){
     let data = req.body;
 
@@ -18,7 +18,7 @@ function signup(req, res){
                     success:false
                 })
             }else{
-                User.signup(data,function(err,result){
+                User.strongSignup(data,function(err,result){
                     if(err){
                         console.log(err);
                         return res.status(500).send({
@@ -45,7 +45,7 @@ function signup(req, res){
 function login(req,res){
     let data = req.body;
     if(data.username && data.password){
-        User.login(data,function(err,result){
+        User.strongLogin(data,function(err,result){
             if(err){
                 console.log(err);
                 return res.status(500).send({
@@ -61,7 +61,8 @@ function login(req,res){
             }
             return res.status(200).send({
                 msg:"Successfully logged in",
-                success:true
+                success:true,
+                response:result
             })
         })
     }else{
@@ -72,7 +73,30 @@ function login(req,res){
     }
 }
 
+
+function isAuthenticated(req,res,next){
+    const token = req.headers.auth;
+    let response;
+    try{
+        response = auth.verifyToken(token);
+    }catch(err){
+        console.log(err);
+        res.status(401).send({msg:"Invalid token",success:false})
+    }
+    User.getUserById(response.id,function(err,result){
+        if(err){
+            return res.status(401).send({
+                msg:"Invalid user.",
+                success:false
+            });
+        }
+        req.user = result;
+        next();
+    })
+}
+
 module.exports = {
     signup,
-    login
+    login,
+    isAuthenticated
 }
